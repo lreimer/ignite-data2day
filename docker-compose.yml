@@ -1,0 +1,27 @@
+version: "3"
+services:
+  ignite-01:
+    image: apacheignite/ignite:2.1.0
+    environment:
+      # - CONFIG_URI=https://raw.githubusercontent.com/apache/ignite/master/examples/config/example-cache.xml
+      # - OPTION_LIBS=
+      - CONFIG_URI=file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/example-cache.xml
+      - JVM_OPTS=-Xms1g -Xmx1g -server -XX:+AggressiveOpts -XX:+UseG1GC -XX:MaxPermSize=256m -XX:+DisableExplicitGC -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
+    ports:
+      - "47500-47509:47500-47509"
+    network_mode: "host"
+    volumes:
+      - "./config:/opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config"
+
+  ignite-02:
+    image: apacheignite/ignite:2.1.0
+    environment:
+      # - CONFIG_URI=https://raw.githubusercontent.com/apache/ignite/master/examples/config/example-cache.xml
+      # - OPTION_LIBS=
+      - CONFIG_URI=file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/example-cache.xml
+      - JVM_OPTS=-Xms1g -Xmx1g -server -XX:+AggressiveOpts -XX:+UseG1GC -XX:MaxPermSize=256m -XX:+DisableExplicitGC -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
+    ports:
+     - "47500-47509:47500-47509"
+    network_mode: "host"
+    volumes:
+      - "./config:/opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config"
