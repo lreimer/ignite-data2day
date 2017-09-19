@@ -63,7 +63,7 @@ public class DataGridApp {
 
             // use Lucene text queries to find companies
             companyRepo.queryByName("QAware");
-            companyRepo.queryByName("Company");
+            companyRepo.queryRevenueGreater(500_000);
 
             // search employees by name and componay
             employeeRepo.queryByName("Kollege");

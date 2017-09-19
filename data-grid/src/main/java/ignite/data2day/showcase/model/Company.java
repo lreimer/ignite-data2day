@@ -39,4 +39,7 @@ public class Company implements Serializable {
     @QuerySqlField(index = true)
     @QueryTextField
     private String name;
+
+    @QuerySqlField(index = true)
+    private long revenue;
 }

@@ -30,6 +30,7 @@ import org.apache.ignite.cache.CacheAtomicityMode;
 import org.apache.ignite.cache.CacheMode;
 import org.apache.ignite.cache.CachePeekMode;
 import org.apache.ignite.cache.query.QueryCursor;
+import org.apache.ignite.cache.query.SqlQuery;
 import org.apache.ignite.cache.query.TextQuery;
 import org.apache.ignite.configuration.CacheConfiguration;
 
@@ -61,22 +62,33 @@ public class CompanyRepository {
 
     public void populate() {
         IgniteCache<String, Company> cache = getOrCreateCache();
-        cache.clear();
 
-        Company qaware = new Company("1", "QAware GmbH");
-        cache.put(qaware.getCompanyId(), qaware);
+        Company qaware = new Company("1", "QAware GmbH", Long.MAX_VALUE);
+        cache.putIfAbsent(qaware.getCompanyId(), qaware);
 
         for (int i = 2; i <= 10; i++) {
-            Company c = new Company(Integer.toString(i), "Company " + i);
-            cache.put(c.getCompanyId(), c);
+            Company c = new Company(Integer.toString(i), "Company " + i, 100_000 * i);
+            cache.putIfAbsent(c.getCompanyId(), c);
         }
+    }
+
+    public void queryRevenueGreater(long revenue) {
+        IgniteCache<String, Company> cache = getOrCreateCache();
+        SqlQuery<String, Company> sql = new SqlQuery<>(Company.class, "revenue > ?");
+
+        System.out.println("SQL query for Company entries with revenue > " + revenue);
+        try (QueryCursor<Cache.Entry<String, Company>> cursor = cache.query(sql.setArgs(revenue))) {
+            List<Company> companies = cursor.getAll().stream().map(Cache.Entry::getValue).collect(Collectors.toList());
+            System.out.println(companies);
+        }
+
     }
 
     public void queryByName(String name) {
         TextQuery<String, Company> txt = new TextQuery<>(Company.class, name);
         IgniteCache<String, Company> cache = getOrCreateCache();
 
-        System.out.println("Query for Company entries with name " + name);
+        System.out.println("Text query for Company entries with name " + name);
         try (QueryCursor<Cache.Entry<String, Company>> cursor = cache.query(txt)) {
             List<Company> companies = cursor.getAll().stream().map(Cache.Entry::getValue).collect(Collectors.toList());
             System.out.println(companies);

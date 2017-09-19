@@ -65,17 +65,16 @@ public class EmployeeRepository {
 
     public void populate() {
         IgniteCache<EmployeeKey, Employee> cache = getOrCreateCache();
-        cache.clear();
 
         Employee reimer = new Employee("11", "1", "M.-Leander Reimer", LocalDate.of(2009, 11, 1));
         EmployeeKey affinityKey = new EmployeeKey(reimer.getEmployeeId(), reimer.getCompanyId());
-        cache.put(affinityKey, reimer);
+        cache.putIfAbsent(affinityKey, reimer);
 
         for (int i = 12; i <= 20; i++) {
             int nr = i - 11;
             Employee kollege = new Employee(Integer.toString(nr), "1", "Kollege " + nr, LocalDate.now());
             affinityKey = new EmployeeKey(kollege.getEmployeeId(), kollege.getCompanyId());
-            cache.put(affinityKey, kollege);
+            cache.putIfAbsent(affinityKey, kollege);
         }
     }
 
