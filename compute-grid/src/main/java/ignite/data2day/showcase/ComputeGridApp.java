@@ -24,34 +24,33 @@
 package ignite.data2day.showcase;
 
 import org.apache.ignite.Ignite;
-import org.apache.ignite.IgniteMessaging;
+import org.apache.ignite.IgniteCompute;
 import org.apache.ignite.Ignition;
 
 import java.util.Optional;
+import java.util.concurrent.atomic.AtomicInteger;
 
-public class MessageConsumerApp {
-
+public class ComputeGridApp {
     public static void main(String[] args) {
+
         System.setProperty("IGNITE_PERFORMANCE_SUGGESTIONS_DISABLED", "true");
         Ignition.setClientMode(true);
 
         Optional<String> configUri = Optional.ofNullable(System.getenv("CONFIG_URI"));
-        Ignite ignite = Ignition.start(configUri.orElse("ignite-messaging.xml"));
-
-        // Messaging instance over given cluster group (in this case, remote nodes).
-        IgniteMessaging messaging = ignite.message();
-
-        messaging.localListen("OrderedTopic", (nodeId, msg) -> {
-            System.out.println("Received ordered message [msg=" + msg + ", from=" + nodeId + ']');
-
-            return true; // Return true to continue listening.
-        });
-
-        messaging.localListen("UnorderedTopic", (nodeId, msg) -> {
-            System.out.println("Received unordered message [msg=" + msg + ", from=" + nodeId + ']');
-
-            return true; // Return true to continue listening.
-        });
+        try (Ignite ignite = Ignition.start(configUri.orElse("compute-grid.xml"))) {
+            distributedClosures(ignite);
+        }
     }
 
+    private static void distributedClosures(Ignite ignite) {
+        IgniteCompute compute = ignite.compute(ignite.cluster().forRemotes());
+
+        // this will only run on one node
+        compute.run(() -> System.out.println("Running distributed closure (1) on " + ignite.cluster().localNode().id()));
+        compute.run(() -> System.out.println("Running distributed closure (2) on " + ignite.cluster().localNode().id()));
+        //compute.run(() -> System.out.println("Running distributed closure (3) on " + ignite.cluster().localNode().id()));
+
+        // Print out hello message on remote nodes in the cluster group.
+        compute.broadcast(() -> System.out.println("Broadcasting distributed closure on " + ignite.cluster().localNode().id()));
+    }
 }

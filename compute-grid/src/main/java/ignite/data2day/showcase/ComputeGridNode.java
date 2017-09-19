@@ -23,17 +23,17 @@
  */
 package ignite.data2day.showcase;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.apache.ignite.Ignition;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
-public class SimpleIgniteMessage {
+import java.util.Optional;
 
-    private long index;
+public class ComputeGridNode {
 
-    private String text;
+    public static void main(String[] args) {
+        System.setProperty("IGNITE_PERFORMANCE_SUGGESTIONS_DISABLED", "true");
+
+        Optional<String> configUri = Optional.ofNullable(System.getenv("CONFIG_URI"));
+        Ignition.start(configUri.orElse("compute-grid.xml"));
+    }
 
 }
