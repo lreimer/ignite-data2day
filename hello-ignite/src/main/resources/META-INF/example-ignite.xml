@@ -20,11 +20,13 @@
             </list>
         </property>
 
+        <!--
         <property name="gridLogger">
             <bean class="org.apache.ignite.logger.log4j.Log4JLogger">
                 <constructor-arg type="java.lang.String" value="ignite-log4j.xml"/>
             </bean>
         </property>
+        -->
 
         <!-- Explicitly configure TCP discovery SPI to provide list of initial nodes. -->
         <property name="discoverySpi">
