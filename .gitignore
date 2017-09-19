@@ -14,8 +14,7 @@ target/
 .gradletasknamecache
 build/
 
+*.javax.hsp
+
 # OSX
 *.DS_Store
-
-kubernetes.tar.gz
-kubernetes/
