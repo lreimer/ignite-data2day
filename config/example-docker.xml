@@ -41,6 +41,8 @@
                               -->
                               <value>ignite-01:47500..47509</value>
                               <value>ignite-02:47500..47509</value>
+                              <value>ignite-03:47500..47509</value>
+                              <value>ignite-04:47500..47509</value>
                           </list>
                         </property>
                     </bean>

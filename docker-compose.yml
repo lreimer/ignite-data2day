@@ -3,10 +3,8 @@ services:
   ignite-01:
     image: apacheignite/ignite:2.1.0
     environment:
-      # - CONFIG_URI=https://raw.githubusercontent.com/apache/ignite/master/examples/config/example-cache.xml
-      # - OPTION_LIBS=
       - CONFIG_URI=file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/example-docker.xml
-      - JVM_OPTS=-Xms1g -Xmx1g -server -XX:+AggressiveOpts -XX:+UseG1GC -XX:MaxPermSize=256m -XX:+DisableExplicitGC -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
+      - JVM_OPTS=-Xms512m -Xmx512m -server -XX:+AggressiveOpts -XX:+UseG1GC -XX:MaxPermSize=256m -XX:+DisableExplicitGC -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
     expose:
       - "47500-47509"
     networks:
@@ -17,10 +15,32 @@ services:
   ignite-02:
     image: apacheignite/ignite:2.1.0
     environment:
-      # - CONFIG_URI=https://raw.githubusercontent.com/apache/ignite/master/examples/config/example-cache.xml
-      # - OPTION_LIBS=
       - CONFIG_URI=file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/example-docker.xml
-      - JVM_OPTS=-Xms1g -Xmx1g -server -XX:+AggressiveOpts -XX:+UseG1GC -XX:MaxPermSize=256m -XX:+DisableExplicitGC -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
+      - JVM_OPTS=-Xms512m -Xmx512m -server -XX:+AggressiveOpts -XX:+UseG1GC -XX:MaxPermSize=256m -XX:+DisableExplicitGC -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
+    expose:
+     - "47500-47509"
+    networks:
+     - ignite
+    volumes:
+      - "./config:/opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config"
+
+  ignite-03:
+    image: apacheignite/ignite:2.1.0
+    environment:
+      - CONFIG_URI=file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/example-docker.xml
+      - JVM_OPTS=-Xms512m -Xmx512m -server -XX:+AggressiveOpts -XX:+UseG1GC -XX:MaxPermSize=256m -XX:+DisableExplicitGC -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
+    expose:
+     - "47500-47509"
+    networks:
+     - ignite
+    volumes:
+      - "./config:/opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config"
+
+  ignite-04:
+    image: apacheignite/ignite:2.1.0
+    environment:
+      - CONFIG_URI=file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/example-docker.xml
+      - JVM_OPTS=-Xms512m -Xmx512m -server -XX:+AggressiveOpts -XX:+UseG1GC -XX:MaxPermSize=256m -XX:+DisableExplicitGC -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
     expose:
      - "47500-47509"
     networks:
@@ -33,7 +53,7 @@ services:
     image: "hello-ignite:1.0.0"
     environment:
       - CONFIG_URI=file:///app/data2day/config/example-docker.xml
-      - JAVA_OPTS=-Xmx512m
+      - JAVA_OPTS=-Xmx256m
     volumes:
       - "./config:/app/data2day/config"
     networks:
@@ -41,6 +61,8 @@ services:
     depends_on:
       - ignite-01
       - ignite-02
+      - ignite-03
+      - ignite-04
 
 networks:
   ignite:
