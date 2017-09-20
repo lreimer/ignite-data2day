@@ -48,10 +48,10 @@ public class TwitterStreamingApp {
 
         // https://apps.twitter.com/app/14259728/keys
         OAuthSettings oAuthSettings = new OAuthSettings(
-                "setting1",
-                "setting2",
-                "setting3",
-                "setting4");
+                "wEc1ktLjOMiklafnzk2JIrKFW",
+                "",
+                "1346627546-H5QnAQJSVyVe9EWjLSArcGwOuMrAAdzujcYFrM3",
+                "");
 
         TwitterStreamer<Integer, String> streamer = new TwitterStreamer<>(oAuthSettings);
         streamer.setIgnite(ignite);
