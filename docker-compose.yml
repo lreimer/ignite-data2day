@@ -64,6 +64,23 @@ services:
       - ignite-03
       - ignite-04
 
+  compute-grid:
+    build: ./compute-grid/
+    image: "compute-grid:1.0.0"
+    environment:
+      - CONFIG_URI=file:///app/data2day/config/example-docker.xml
+      - JAVA_OPTS=-Xmx256m
+    volumes:
+      - "./config:/app/data2day/config"
+    networks:
+      - ignite
+    depends_on:
+      - ignite-01
+      - ignite-02
+      - ignite-03
+      - ignite-04
+
+  # this one has problems with the distributed queries
   data-grid:
     build: ./data-grid/
     image: "data-grid:1.0.0"

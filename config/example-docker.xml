@@ -15,12 +15,26 @@
 
         <property name="cacheConfiguration">
             <list>
-                <!-- Partitioned cache example configuration (Atomic mode). -->
-                <bean class="org.apache.ignite.configuration.CacheConfiguration">
-                    <property name="name" value="default"/>
-                    <property name="atomicityMode" value="ATOMIC"/>
-                    <property name="backups" value="1"/>
-                </bean>
+              <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                  <property name="name" value="default"/>
+                  <property name="cacheMode" value="PARTITIONED"/>
+                  <property name="atomicityMode" value="ATOMIC"/>
+                  <property name="backups" value="1"/>
+              </bean>
+              <!-- Partitioned cache example configuration (Atomic mode). -->
+              <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                  <property name="name" value="charCount"/>
+                  <property name="cacheMode" value="PARTITIONED"/>
+                  <property name="atomicityMode" value="ATOMIC"/>
+                  <property name="backups" value="1"/>
+              </bean>
+              <!-- Partitioned cache example configuration (Atomic mode). -->
+              <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                  <property name="name" value="someCache"/>
+                  <property name="cacheMode" value="PARTITIONED"/>
+                  <property name="atomicityMode" value="ATOMIC"/>
+                  <property name="backups" value="1"/>
+              </bean>
             </list>
         </property>
 
