@@ -43,5 +43,7 @@ public class HelloIgniteApp {
             // Print out hello message on remote nodes in the cluster group.
             compute.broadcast(() -> System.out.println("Hello data2day from Apache Ignite " + ignite.cluster().localNode().id()));
         }
+
+        System.exit(0);
     }
 }
