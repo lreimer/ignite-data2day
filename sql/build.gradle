@@ -18,6 +18,7 @@ dependencies {
     compile 'org.apache.ignite:ignite-spring:2.1.0'
     compile 'org.apache.ignite:ignite-log4j:2.1.0'
     compile 'org.apache.ignite:ignite-indexing:2.1.0'
+    runtime 'org.apache.ignite:ignite-kubernetes:2.1.0'
 
     // Use the latest Groovy version for Spock testing
     testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
