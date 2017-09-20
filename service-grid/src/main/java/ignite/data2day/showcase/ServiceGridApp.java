@@ -48,6 +48,8 @@ public class ServiceGridApp {
 
             clusterSingletonRandomUuid(ignite);
         }
+
+        System.exit(0);
     }
 
     private static void pingService(Ignite ignite) {
