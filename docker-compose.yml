@@ -3,7 +3,7 @@ services:
   ignite-01:
     image: apacheignite/ignite:2.1.0
     environment:
-      - CONFIG_URI=file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/example-docker.xml
+      - CONFIG_URI=file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/docker-ignite.xml
       - JVM_OPTS=-Xms512m -Xmx512m -server -XX:+AggressiveOpts -XX:+UseG1GC -XX:MaxPermSize=256m -XX:+DisableExplicitGC -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
     expose:
       - "47500-47509"
@@ -15,7 +15,7 @@ services:
   ignite-02:
     image: apacheignite/ignite:2.1.0
     environment:
-      - CONFIG_URI=file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/example-docker.xml
+      - CONFIG_URI=file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/docker-ignite.xml
       - JVM_OPTS=-Xms512m -Xmx512m -server -XX:+AggressiveOpts -XX:+UseG1GC -XX:MaxPermSize=256m -XX:+DisableExplicitGC -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
     expose:
      - "47500-47509"
@@ -27,7 +27,7 @@ services:
   ignite-03:
     image: apacheignite/ignite:2.1.0
     environment:
-      - CONFIG_URI=file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/example-docker.xml
+      - CONFIG_URI=file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/docker-ignite.xml
       - JVM_OPTS=-Xms512m -Xmx512m -server -XX:+AggressiveOpts -XX:+UseG1GC -XX:MaxPermSize=256m -XX:+DisableExplicitGC -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
     expose:
      - "47500-47509"
@@ -39,7 +39,7 @@ services:
   ignite-04:
     image: apacheignite/ignite:2.1.0
     environment:
-      - CONFIG_URI=file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/example-docker.xml
+      - CONFIG_URI=file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/docker-ignite.xml
       - JVM_OPTS=-Xms512m -Xmx512m -server -XX:+AggressiveOpts -XX:+UseG1GC -XX:MaxPermSize=256m -XX:+DisableExplicitGC -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
     expose:
      - "47500-47509"
@@ -52,7 +52,7 @@ services:
     build: ./hello-ignite/
     image: "hello-ignite:1.0.0"
     environment:
-      - CONFIG_URI=file:///app/data2day/config/example-docker.xml
+      - CONFIG_URI=file:///app/data2day/config/docker-ignite.xml
       - JAVA_OPTS=-Xmx256m
     volumes:
       - "./config:/app/data2day/config"
@@ -68,7 +68,7 @@ services:
     build: ./compute-grid/
     image: "compute-grid:1.0.0"
     environment:
-      - CONFIG_URI=file:///app/data2day/config/example-docker.xml
+      - CONFIG_URI=file:///app/data2day/config/docker-ignite.xml
       - JAVA_OPTS=-Xmx256m
     volumes:
       - "./config:/app/data2day/config"
@@ -85,7 +85,7 @@ services:
   #   build: ./data-grid/
   #   image: "data-grid:1.0.0"
   #   environment:
-  #     - CONFIG_URI=file:///app/data2day/config/example-docker.xml
+  #     - CONFIG_URI=file:///app/data2day/config/docker-ignite.xml
   #     - JAVA_OPTS=-Xmx256m
   #   volumes:
   #     - "./config:/app/data2day/config"
