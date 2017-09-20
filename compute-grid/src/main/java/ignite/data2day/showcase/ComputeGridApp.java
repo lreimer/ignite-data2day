@@ -53,6 +53,8 @@ public class ComputeGridApp {
 
             executorService(ignite);
         }
+
+        System.exit(0);
     }
 
     /**
