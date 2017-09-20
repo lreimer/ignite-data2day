@@ -67,6 +67,7 @@ public class TwitterStreamingApp {
             return new GridMapEntry<>(tweet.id, tweet.text);
         });
 
+        // see https://dev.twitter.com/streaming/overview/request-parameters
         Map<String, String> params = new HashMap<>();
         params.put("track", "data2day,qaware,apache ignite,cloud");
         params.put("language", "en,de");
