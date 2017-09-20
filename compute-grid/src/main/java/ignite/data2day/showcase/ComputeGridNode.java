@@ -27,6 +27,9 @@ import org.apache.ignite.Ignition;
 
 import java.util.Optional;
 
+/**
+ * Start Ignite server node, create and populate caches.
+ */
 public class ComputeGridNode {
 
     public static void main(String[] args) {
