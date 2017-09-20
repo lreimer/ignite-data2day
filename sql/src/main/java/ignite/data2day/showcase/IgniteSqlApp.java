@@ -66,6 +66,8 @@ public class IgniteSqlApp {
             deleteAllPersons(personCache);
             cityCache.clear();
         }
+
+        System.exit(0);
     }
 
     private static void queryData(IgniteCache<Long, String> cityCache) {
