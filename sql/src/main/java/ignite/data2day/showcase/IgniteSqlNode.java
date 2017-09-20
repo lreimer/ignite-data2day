@@ -24,8 +24,11 @@
 package ignite.data2day.showcase;
 
 import org.apache.ignite.Ignite;
+import org.apache.ignite.IgniteCache;
 import org.apache.ignite.IgniteEvents;
 import org.apache.ignite.Ignition;
+import org.apache.ignite.cache.CachePeekMode;
+import org.apache.ignite.events.CacheEvent;
 import org.apache.ignite.events.EventType;
 
 import java.util.Optional;
@@ -44,8 +47,16 @@ public class IgniteSqlNode {
         // start listening for cache events
         IgniteEvents events = ignite.events();
         events.localListen(event -> {
-                    // echo the event raised
-                    System.out.println("Received " + event);
+                    if (event instanceof CacheEvent) {
+                        String name = ((CacheEvent) event).cacheName();
+                        IgniteCache cache = ignite.cache(name);
+
+                        int primarySize = cache.size(CachePeekMode.PRIMARY);
+                        int localSize = cache.localSize();
+
+                        System.out.println("Received " + event);
+                        System.out.printf("Cache %s now has PRIMARY size %s and LOCAL %s.%n", name, primarySize, localSize);
+                    }
                     return true;
                 },
                 EventType.EVT_CACHE_OBJECT_PUT, EventType.EVT_CACHE_OBJECT_READ,
