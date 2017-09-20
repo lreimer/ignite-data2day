@@ -69,5 +69,7 @@ public class DataGridApp {
             employeeRepo.queryByName("Kollege");
             employeeRepo.findAllByCompanyName("QAware GmbH");
         }
+
+        System.exit(0);
     }
 }
