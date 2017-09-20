@@ -25,8 +25,6 @@ package ignite.data2day.showcase.services;
 
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteAtomicLong;
-import org.apache.ignite.cache.CacheMode;
-import org.apache.ignite.configuration.AtomicConfiguration;
 import org.apache.ignite.resources.IgniteInstanceResource;
 import org.apache.ignite.services.Service;
 import org.apache.ignite.services.ServiceContext;
@@ -42,14 +40,10 @@ public class DefaultRandomUuidService implements RandomUuidService, Service {
     private Ignite ignite;
 
     private IgniteAtomicLong invocations;
-    private UUID executionId;
+    private String executionId;
 
     @Override
     public void init(ServiceContext ctx) throws Exception {
-        AtomicConfiguration configuration = new AtomicConfiguration();
-        configuration.setCacheMode(CacheMode.REPLICATED);
-        this.invocations = ignite.atomicLong("randomUuidInvocations", configuration, 0, true);
-
         System.out.println("Initialized service: " + ctx.name());
     }
 
@@ -60,9 +54,8 @@ public class DefaultRandomUuidService implements RandomUuidService, Service {
 
     @Override
     public void execute(ServiceContext ctx) throws Exception {
-        // Since our service is simply returning pong and counts invocations
-        // there is nothing we need to do in order to start it up.
-        this.executionId = ctx.executionId();
+        this.invocations = ignite.atomicLong("randomUuidInvocations", 0, true);
+        this.executionId = ctx.executionId().toString();
         System.out.printf("Executing service %s {executionId=%s}.%n", ctx.name(), executionId);
     }
 

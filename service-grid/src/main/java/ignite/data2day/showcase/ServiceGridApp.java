@@ -30,8 +30,6 @@ import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteAtomicLong;
 import org.apache.ignite.IgniteServices;
 import org.apache.ignite.Ignition;
-import org.apache.ignite.cache.CacheMode;
-import org.apache.ignite.configuration.AtomicConfiguration;
 
 import java.util.Optional;
 
@@ -45,7 +43,7 @@ public class ServiceGridApp {
         Ignition.setClientMode(true);
 
         Optional<String> configUri = Optional.ofNullable(System.getenv("CONFIG_URI"));
-        try (Ignite ignite = Ignition.start(configUri.orElse(null))) {
+        try (Ignite ignite = Ignition.start(configUri.orElse("service-grid.xml"))) {
             pingService(ignite);
 
             clusterSingletonRandomUuid(ignite);
@@ -58,16 +56,14 @@ public class ServiceGridApp {
         PingService pingService = services.serviceProxy("PingService", PingService.class, false);
 
         // get or create the invocation counter
-        AtomicConfiguration configuration = new AtomicConfiguration();
-        configuration.setCacheMode(CacheMode.REPLICATED);
-        IgniteAtomicLong invocations = ignite.atomicLong("pingInvocations", configuration, 0, true);
+        IgniteAtomicLong invocations = ignite.atomicLong("pingInvocations", 0, false);
 
         for (int i = 0; i < 10; i++) {
             long before = invocations.get();
             String response = pingService.ping();
             long after = invocations.get();
 
-            System.out.printf("Before %s | %s | After %s%n", before, response, after);
+            System.out.printf("Before %s | ping() -> %s | After %s%n", before, response, after);
         }
     }
 
@@ -78,9 +74,7 @@ public class ServiceGridApp {
         // services.deployNodeSingleton("RandomUuidService", new DefaultRandomUuidService());
         services.deployClusterSingleton("RandomUuidService", new DefaultRandomUuidService());
 
-        AtomicConfiguration configuration = new AtomicConfiguration();
-        configuration.setCacheMode(CacheMode.REPLICATED);
-        IgniteAtomicLong invocations = ignite.atomicLong("randomUuidInvocations", configuration, 0, true);
+        IgniteAtomicLong invocations = ignite.atomicLong("randomUuidInvocations", 0, false);
 
         // then we obtain a proxy and start using the service
         RandomUuidService randomUuidService = services.serviceProxy("RandomUuidService", RandomUuidService.class, false);

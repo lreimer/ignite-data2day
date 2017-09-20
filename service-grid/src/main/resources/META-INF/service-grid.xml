@@ -24,6 +24,13 @@
             </list>
         </property>
 
+        <property name="atomicConfiguration">
+            <bean class="org.apache.ignite.configuration.AtomicConfiguration">
+                <!-- Set number of backups. -->
+                <property name="backups" value="1"/>
+            </bean>
+        </property>
+
         <!-- Distributed Service configuration. -->
         <property name="serviceConfiguration">
             <list>
