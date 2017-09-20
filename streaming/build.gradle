@@ -1,0 +1,47 @@
+plugins {
+    id "java"
+    id "application"
+    id "groovy"
+
+    id "com.github.hierynomus.license" version "0.14.0"
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.16.18'
+
+    // the Apache ignite dependencies
+    compile 'org.apache.ignite:ignite-core:2.1.0'
+    compile 'org.apache.ignite:ignite-spring:2.1.0'
+    compile 'org.apache.ignite:ignite-log4j:2.1.0'
+    compile 'org.apache.ignite:ignite-indexing:2.1.0'
+    compile 'org.apache.ignite:ignite-twitter:2.1.0'
+
+    // Use the latest Groovy version for Spock testing
+    testCompile 'org.codehaus.groovy:groovy-all:2.4.10'
+
+    // Use the awesome Spock testing and specification framework even with Java
+    testCompile 'org.spockframework:spock-core:1.0-groovy-2.4'
+    testCompile 'junit:junit:4.12'
+}
+
+group = 'ignite.data2day.showcase'
+version = '1.0.0'
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
+
+mainClassName = 'ignite.data2day.showcase.TwitterStreamingApp'
+
+license {
+    skipExistingHeaders = true
+    header rootProject.file('../LICENSE')
+    includes(["**/*.java", "**/*.groovy"])
+    mapping {
+        java = 'SLASHSTAR_STYLE'
+        groovy = 'SLASHSTAR_STYLE'
+    }
+}
