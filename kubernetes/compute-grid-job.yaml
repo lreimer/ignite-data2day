@@ -1,0 +1,24 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: compute-grid
+spec:
+  template:
+    metadata:
+      name: compute-grid
+    spec:
+      containers:
+      - name: compute-grid
+        image: lreimer/compute-grid:1.0.0
+        env:
+        - name: CONFIG_URI
+          value: file:///app/data2day/config/kubernetes-ignite.xml
+        - name: JAVA_OPTS
+          value: -Xmx256m
+        volumeMounts:
+        - mountPath: /app/data2day/config
+          name: ignite-config
+      volumes:
+      - name: ignite-config
+        configMap:
+          name: kubernetes-ignite-xml

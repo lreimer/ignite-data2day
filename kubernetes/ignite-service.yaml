@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  # Name of Ignite Service used by Kubernetes IP finder.
+  # The name must be equal to TcpDiscoveryKubernetesIpFinder.serviceName.
+  name: ignite
+spec:
+  clusterIP: None # custom value.
+  ports:
+    - port: 9042 # custom value.
+  selector:
+    # Must be equal to one of the labels set in Ignite pods'
+    # deployement configuration.
+    app: ignite

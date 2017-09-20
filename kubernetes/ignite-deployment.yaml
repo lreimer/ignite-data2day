@@ -1,0 +1,36 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: ignite-cluster
+spec:
+  replicas: 4
+  template:
+    metadata:
+      labels:
+        # This label has to be added to the selector's section of
+        # ignite-service.yaml so that the Kubernetes Ignite lookup service
+        # can easily track all Ignite pods available deployed so far.
+        app: ignite
+    spec:
+      containers:
+      - name: ignite-node
+        image: apacheignite/ignite:2.1.0
+        env:
+        - name: CONFIG_URI
+          value: file:///opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config/kubernetes-ignite.xml
+        - name: JVM_OPTS
+          value: -Xms512m -Xmx512m -server -XX:+AggressiveOpts -XX:+UseG1GC -XX:MaxPermSize=256m -XX:+DisableExplicitGC -DIGNITE_PERFORMANCE_SUGGESTIONS_DISABLED=true
+        - name: OPTION_LIBS
+          value: ignite-kubernetes
+        ports:
+        - containerPort: 11211 # REST port number.
+        - containerPort: 47100 # communication SPI port number.
+        - containerPort: 47500 # discovery SPI port number.
+        - containerPort: 49112 # JMX port number.
+        volumeMounts:
+        - mountPath: /opt/ignite/apache-ignite-fabric-2.1.0-bin/data2day/config
+          name: ignite-config
+      volumes:
+      - name: ignite-config
+        configMap:
+          name: kubernetes-ignite-xml

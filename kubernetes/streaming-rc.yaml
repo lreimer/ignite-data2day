@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  name: ignite-streaming
+spec:
+  replicas: 1
+  selector:
+    app: twitter-streaming
+  template:
+    metadata:
+      name: ignite-streaming
+      labels:
+        app: twitter-streaming
+    spec:
+      containers:
+      - name: twitter-streaming
+        image: lreimer/ignite-streaming:1.0.0
+        env:
+        - name: CONFIG_URI
+          value: file:///app/data2day/config/kubernetes-ignite.xml
+        - name: JAVA_OPTS
+          value: -Xmx256m
+        volumeMounts:
+        - mountPath: /app/data2day/config
+          name: ignite-config
+      volumes:
+      - name: ignite-config
+        configMap:
+          name: kubernetes-ignite-xml

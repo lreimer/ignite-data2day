@@ -1,0 +1,75 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kubernetes-ignite-xml
+data:
+  kubernetes-ignite.xml: |
+    <?xml version="1.0" encoding="UTF-8"?>
+
+    <beans xmlns="http://www.springframework.org/schema/beans"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xmlns:util="http://www.springframework.org/schema/util"
+           xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/util
+            http://www.springframework.org/schema/util/spring-util.xsd">
+
+        <bean id="ignite.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
+            <!-- Set to true to enable distributed class loading for examples, default is false. -->
+            <property name="peerClassLoadingEnabled" value="true"/>
+
+            <property name="cacheConfiguration">
+                <list>
+                  <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                      <property name="name" value="default"/>
+                      <property name="cacheMode" value="PARTITIONED"/>
+                      <property name="atomicityMode" value="ATOMIC"/>
+                      <property name="backups" value="1"/>
+                  </bean>
+                  <!-- Partitioned cache example configuration (Atomic mode). -->
+                  <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                      <property name="name" value="charCount"/>
+                      <property name="cacheMode" value="PARTITIONED"/>
+                      <property name="atomicityMode" value="ATOMIC"/>
+                      <property name="backups" value="1"/>
+                  </bean>
+                  <!-- Partitioned cache example configuration (Atomic mode). -->
+                  <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                      <property name="name" value="someCache"/>
+                      <property name="cacheMode" value="PARTITIONED"/>
+                      <property name="atomicityMode" value="ATOMIC"/>
+                      <property name="backups" value="1"/>
+                  </bean>
+                  <!-- Partitioned cache example configuration (Atomic mode). -->
+                  <bean class="org.apache.ignite.configuration.CacheConfiguration">
+                      <property name="name" value="tweetCache"/>
+                      <property name="cacheMode" value="PARTITIONED"/>
+                      <property name="atomicityMode" value="ATOMIC"/>
+                      <property name="backups" value="1"/>
+                  </bean>
+                </list>
+            </property>
+
+            <!-- Enable task execution events for examples. -->
+            <property name="includeEventTypes">
+                <list>
+                    <!--Cache events-->
+                    <util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_PUT"/>
+                    <util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_READ"/>
+                    <util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_OBJECT_REMOVED"/>
+                    <util:constant static-field="org.apache.ignite.events.EventType.EVT_CACHE_QUERY_EXECUTED"/>
+                </list>
+            </property>
+
+            <!-- Explicitly configure TCP discovery SPI to provide list of initial nodes. -->
+            <property name="discoverySpi">
+                <bean class="org.apache.ignite.spi.discovery.tcp.TcpDiscoverySpi">
+                    <property name="ipFinder">
+                      <bean class="org.apache.ignite.spi.discovery.tcp.ipfinder.kubernetes.TcpDiscoveryKubernetesIpFinder">
+                      </bean>
+                    </property>
+                </bean>
+            </property>
+        </bean>
+    </beans>
