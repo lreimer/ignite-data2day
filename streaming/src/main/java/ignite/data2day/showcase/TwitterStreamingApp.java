@@ -23,9 +23,11 @@
  */
 package ignite.data2day.showcase;
 
+import com.google.gson.Gson;
 import org.apache.ignite.Ignite;
 import org.apache.ignite.IgniteDataStreamer;
 import org.apache.ignite.Ignition;
+import org.apache.ignite.internal.util.lang.GridMapEntry;
 import org.apache.ignite.stream.twitter.OAuthSettings;
 import org.apache.ignite.stream.twitter.TwitterStreamer;
 
@@ -42,7 +44,7 @@ public class TwitterStreamingApp {
         Optional<String> configUri = Optional.ofNullable(System.getenv("CONFIG_URI"));
         Ignite ignite = Ignition.start(configUri.orElse("ignite-streaming.xml"));
 
-        IgniteDataStreamer<Integer, String> dataStreamer = ignite.dataStreamer("tweetCache");
+        IgniteDataStreamer<Long, String> dataStreamer = ignite.dataStreamer("tweetCache");
         dataStreamer.allowOverwrite(true);
         dataStreamer.autoFlushFrequency(10);
 
@@ -53,21 +55,35 @@ public class TwitterStreamingApp {
                 "1346627546-H5QnAQJSVyVe9EWjLSArcGwOuMrAAdzujcYFrM3",
                 "");
 
-        TwitterStreamer<Integer, String> streamer = new TwitterStreamer<>(oAuthSettings);
+        TwitterStreamer<Long, String> streamer = new TwitterStreamer<>(oAuthSettings);
         streamer.setIgnite(ignite);
         streamer.setStreamer(dataStreamer);
 
+        final Gson gson = new Gson();
+        streamer.setSingleTupleExtractor(msg -> {
+            System.out.printf("Received tweet JSON %s", msg);
+
+            Tweet tweet = gson.fromJson(msg, Tweet.class);
+            return new GridMapEntry<>(tweet.id, tweet.text);
+        });
+
         Map<String, String> params = new HashMap<>();
-        params.put("track", "data2day,ignite,apache,cloud");
+        params.put("track", "data2day,qaware,apache ignite,cloud");
+        params.put("language", "en,de");
         // @LeanderReimer,@qaware,@data2day
         params.put("follow", "1346627546,32837461,2650574588");
 
-        streamer.setApiParams(params);// Twitter Streaming API params.
+        streamer.setApiParams(params);
 
         // https://stream.twitter.com/1.1/statuses/filter.json
         streamer.setEndpointUrl("/statuses/filter.json");
         streamer.setThreadsCount(4);
 
         streamer.start();
+    }
+
+    private static class Tweet {
+        public Long id;
+        public String text;
     }
 }

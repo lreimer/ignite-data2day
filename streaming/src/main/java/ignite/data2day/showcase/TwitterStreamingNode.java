@@ -41,7 +41,7 @@ public class TwitterStreamingNode {
         Optional<String> configUri = Optional.ofNullable(System.getenv("CONFIG_URI"));
         Ignite ignite = Ignition.start(configUri.orElse("ignite-streaming.xml"));
 
-        IgniteCache<Integer, String> tweetCache = ignite.cache("tweetCache");
+        IgniteCache<Long, String> tweetCache = ignite.cache("tweetCache");
         System.out.printf("Tweet cache size is %s.%n", tweetCache.size(CachePeekMode.PRIMARY));
 
         // start listening for cache events
@@ -51,7 +51,9 @@ public class TwitterStreamingNode {
                         if (((CacheEvent) event).eventNode().isLocal()) {
                             Object id = ((CacheEvent) event).key();
                             Object text = ((CacheEvent) event).newValue();
+
                             System.out.printf("Added Tweet{id=%s, text=%s}.%n", id, text);
+                            System.out.printf("Tweet cache size is %s.%n", tweetCache.size(CachePeekMode.PRIMARY));
                         }
                     }
 
