@@ -1,0 +1,33 @@
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <listener>
+        <listener-class>org.apache.ignite.startup.servlet.ServletContextListenerStartup</listener-class>
+    </listener>
+
+    <filter>
+        <filter-name>IgniteWebSessionsFilter</filter-name>
+        <filter-class>org.apache.ignite.cache.websession.WebSessionFilter</filter-class>
+    </filter>
+
+    <!-- You can also specify a custom URL pattern. -->
+    <filter-mapping>
+        <filter-name>IgniteWebSessionsFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    <!-- Specify Ignite configuration (relative to META-INF folder or Ignite_HOME). -->
+    <context-param>
+        <param-name>IgniteConfigurationFilePath</param-name>
+        <param-value>config/default-config.xml</param-value>
+    </context-param>
+
+    <!-- Specify the name of Ignite cache for web sessions. -->
+    <context-param>
+        <param-name>IgniteWebSessionsCacheName</param-name>
+        <param-value>partitioned</param-value>
+    </context-param>
+
+</web-app>

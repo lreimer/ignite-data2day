@@ -1,0 +1,26 @@
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- Enable L2 cache. -->
+        <property name="cache.use_second_level_cache">true</property>
+        <!-- Generate L2 cache statistics. -->
+        <property name="generate_statistics">true</property>
+
+        <!-- Specify Ignite as L2 cache provider. -->
+        <property name="cache.region.factory_class">org.apache.ignite.cache.hibernate.HibernateRegionFactory</property>
+
+        <!-- Specify the name of the grid, that will be used for second level caching. -->
+        <property name="org.apache.ignite.hibernate.ignite_instance_name">hibernate-grid</property>
+
+        <!-- Set default L2 cache access type. -->
+        <property name="org.apache.ignite.hibernate.default_access_type">READ_ONLY</property>
+
+        <!-- Specify the entity classes for mapping. -->
+        <mapping class="com.mycompany.MyEntity1"/>
+
+        <!-- Per-class L2 cache settings. -->
+        <class-cache class="com.mycompany.MyEntity1" usage="read-only"/>
+        <collection-cache collection="com.mycompany.MyEntity1.children" usage="read-only"/>
+
+    </session-factory>
+</hibernate-configuration>
