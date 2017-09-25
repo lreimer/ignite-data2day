@@ -53,7 +53,7 @@ public class DefaultPingPongService implements PingService, Service {
     @Override
     public void execute(ServiceContext ctx) throws Exception {
         // obtaining the atomic long in the init block lead to a deadlock
-        this.invocations = ignite.atomicLong("pingInvocations", 0, true);
+        this.invocations = ignite.atomicLong("pingInvocations", 0, false);
         this.executionId = ctx.executionId().toString();
         System.out.printf("Executing service %s {executionId=%s}.%n", ctx.name(), executionId);
     }

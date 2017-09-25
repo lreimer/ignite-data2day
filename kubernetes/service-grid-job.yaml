@@ -10,7 +10,7 @@ spec:
       restartPolicy: OnFailure
       containers:
       - name: service-grid
-        image: lreimer/service-grid:1.0.0
+        image: lreimer/service-grid:1.0.2
         env:
         - name: CONFIG_URI
           value: file:///app/data2day/config/kubernetes-ignite.xml

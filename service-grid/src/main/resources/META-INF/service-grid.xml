@@ -6,7 +6,9 @@
         http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <!--
     <bean id="defaultPingPongService" class="ignite.data2day.showcase.services.DefaultPingPongService"/>
+    -->
 
     <bean id="ignite.cfg" class="org.apache.ignite.configuration.IgniteConfiguration">
         <!-- Set to true to enable distributed class loading for examples, default is false. -->
@@ -32,6 +34,7 @@
         </property>
 
         <!-- Distributed Service configuration. -->
+        <!--
         <property name="serviceConfiguration">
             <list>
                 <bean class="org.apache.ignite.services.ServiceConfiguration">
@@ -42,6 +45,7 @@
                 </bean>
             </list>
         </property>
+        -->
 
         <!--
         <property name="gridLogger">

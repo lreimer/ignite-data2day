@@ -54,7 +54,7 @@ public class DefaultRandomUuidService implements RandomUuidService, Service {
 
     @Override
     public void execute(ServiceContext ctx) throws Exception {
-        this.invocations = ignite.atomicLong("randomUuidInvocations", 0, true);
+        this.invocations = ignite.atomicLong("randomUuidInvocations", 0, false);
         this.executionId = ctx.executionId().toString();
         System.out.printf("Executing service %s {executionId=%s}.%n", ctx.name(), executionId);
     }

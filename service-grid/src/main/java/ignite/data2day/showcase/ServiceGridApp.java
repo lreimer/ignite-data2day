@@ -23,6 +23,7 @@
  */
 package ignite.data2day.showcase;
 
+import ignite.data2day.showcase.services.DefaultPingPongService;
 import ignite.data2day.showcase.services.DefaultRandomUuidService;
 import ignite.data2day.showcase.services.PingService;
 import ignite.data2day.showcase.services.RandomUuidService;
@@ -53,13 +54,15 @@ public class ServiceGridApp {
     }
 
     private static void pingService(Ignite ignite) {
-        // get a service proxy to our ping service, the service proxy will be non sticky
         IgniteServices services = ignite.services();
-        PingService pingService = services.serviceProxy("PingService", PingService.class, false);
 
+        // first we deploy the service programmatically
+        IgniteAtomicLong invocations = ignite.atomicLong("pingInvocations", 0, true);
+        services.deployNodeSingleton("PingService", new DefaultPingPongService());
+
+        // get a service proxy to our ping service, the service proxy will be non sticky
         // get or create the invocation counter
-        IgniteAtomicLong invocations = ignite.atomicLong("pingInvocations", 0, false);
-
+        PingService pingService = services.serviceProxy("PingService", PingService.class, false);
         for (int i = 0; i < 10; i++) {
             long before = invocations.get();
             String response = pingService.ping();
@@ -73,10 +76,9 @@ public class ServiceGridApp {
         IgniteServices services = ignite.services();
 
         // first we deploy the service programmatically
-        // services.deployNodeSingleton("RandomUuidService", new DefaultRandomUuidService());
+        IgniteAtomicLong invocations = ignite.atomicLong("randomUuidInvocations", 0, true);
         services.deployClusterSingleton("RandomUuidService", new DefaultRandomUuidService());
 
-        IgniteAtomicLong invocations = ignite.atomicLong("randomUuidInvocations", 0, false);
 
         // then we obtain a proxy and start using the service
         RandomUuidService randomUuidService = services.serviceProxy("RandomUuidService", RandomUuidService.class, false);
